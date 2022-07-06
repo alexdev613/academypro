@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Média Ponderada</title>
+    <style>
+        body {
+            background-image: linear-gradient(45deg, lightblue, navy);
+        }
+        
+        main {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: inherit;
+            background-color: rgba(41, 41, 250, 1);
+            width: 550px;
+            height: 750px;
+            align-items: center;
+            justify-content: space-evenly;
+            border-radius: 25px;
+            box-shadow: 20px 10px 30px blanchedalmond;
+        }
+        
+        .titulo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 70px;
+            font: bold 2rem serif;
+            border-bottom: solid 5px black;
+            border-top: solid 5px black;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        
+        img[alt=ponderada] {
+            width: 47%;
+            height: 97%;
+            margin: 5px;
+        }
+        
+        .divNotas {
+            margin-left: 0;
+            margin-right: 50%;
+        }
+        
+        aside {
+            margin-top: 0;
+            margin-right: 25%;
+            margin-left: 30px;
+        }
+        
+        .input {
+            display: flex;
+            width: 100px;
+            height: 70px;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            outline: 0;
+            font: bold 1.5rem serif;
+            text-align: center;
+        }
+        
+        .inputp {
+            display: flex;
+            width: 100px;
+            /*largura */
+            height: 70px;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            outline: 0;
+            font: bold 1.5rem serif;
+            text-align: center;
+        }
+        
+        .input input {
+            height: 45px;
+            border-radius: 5px;
+            outline: 0;
+            font: bold 1.5rem serif;
+            text-align: center;
+        }
+        
+        .inputp input {
+            width: 70px;
+            height: 45px;
+            border-radius: 5px;
+            outline: 0;
+            font: bold 1.5rem serif;
+            text-align: center;
+        }
+        
+        section {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        /*.input label {
+            font: bold 1.5rem serif;
+        }*/
+        
+        button {
+            width: 400px;
+            height: 50px;
+            font: bold 1.5rem serif;
+            color: blanchedalmond;
+            background: linear-gradient(125deg, black, rgb(50, 50, 50));
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .botao:hover {
+            font: bold 1.5rem serif;
+            border-top: none;
+            border-left: none;
+            border-color: aqua;
+            background:rgba(41, 1, 0, 0.25);
+            color: #111;
+        }
+        
+        .result {
+            display: flex;
+            margin-top: 5px;
+            align-items: center;
+            width: 400px;
+            height: 180px;
+            border-radius: 5px;
+            font: italic 1.5rem serif;
+            box-shadow: 0px 0px 10px black;
+            color: blanchedalmond;
+            background: black;
+            padding: 20px;
+            box-sizing: border-box;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <header class="titulo">
+                Média Ponderada
+                <img src="./imagens/mediaPoderada.jpg" alt="ponderada">
+            </header>
+            <section>
+                <div class="divNotas">
+                    <div class="input">
+                        <label>1ªNota:</label>
+                        <input type="number" id="nota1" step="0.1" min="0" max="10.0" autofocus required>
+                    </div>
+
+                    <div class="input">
+                        <label>2ªNota:</label>
+                        <input type="number" id="nota2" step="0.1" min="0" max="10.0" required>
+                    </div>
+
+                    <div class="input">
+                        <label>3ªNota:</label>
+                        <input type="number" id="nota3" step="0.1" min="0" max="10.0" required>
+                    </div>
+                </div>
+
+                <aside>
+                    <div class="inputp">
+                        <label>1ºPeso:</label>
+                        <input type="number" id="peso1" step="1" min="0" max="10.0" maxlength="10" required>
+                    </div>
+                    <div class="inputp">
+                        <label>2ºPeso:</label>
+                        <input type="number" id="peso2" step="1" min="0" max="10.0" maxlength="10" required>
+                    </div>
+                    <div class="inputp">
+                        <label>3ºPeso:</label>
+                        <input type="number" id="peso3" step="1" min="0" max="10.0" maxlength="10" required>
+                    </div>
+                </aside>
+            </section>
+
+
+            <div>
+                <button id="calcular" class="botao">Calcular</button>
+            </div>
+            <div class="result" id="resultado"></div>
+            <footer>
+                <marquee>
+                    <b><i>heisenberg.net Soluções!</i><b>
+                </marquee>
+            </footer>
+        </div>
+    </main>
+    <script>
+        const calcular = document.getElementById('calcular');
+
+function validate() {
+    const nota1 = document.getElementById('nota1');
+    const nota2 = document.getElementById('nota2');
+    const nota3 = document.getElementById('nota3');
+    const peso1 = document.getElementById('peso1');
+    const peso2 = document.getElementById('peso2');
+    const peso3 = document.getElementById('peso3');
+    
+    const resultado = document.getElementById('resultado');
+    const mediaPonderada = (((nota1.value * peso1.value) + (nota2.value * peso2.value) +
+    (nota3.value * peso3.value)) / (parseInt(peso1.value) + parseInt(peso2.value) + 
+    parseInt(peso3.value))).toFixed(2);
+
+    /*OBSERVAÇÃO: Mas quando se trata da soma (+), temos que imaginar
+    que para concatenar strings também usamos o sina de "+", então temos
+    que converter explicitamente os valores em números, para que não ocorra
+    uma concatenação:
+    Exemplo:
+    2 + 2 = 22
+    parseint(2) + parseint(2) = 4*/
+
+
+    nota1.style.border = 'none';
+    nota2.style.border = 'none';
+    nota3.style.border = 'none';
+
+    if (!nota1.value || !nota2.value || !nota3.value) {
+        if (!nota1.value && !nota2.value && !nota3.value) {
+            nota1.style.border = '2px solid red';
+            nota2.style.border = '2px solid red';
+            nota3.style.border = '2px solid red';
+        } else if (!nota1.value && !nota2.value) {
+            nota1.style.border = '2px solid red';
+            nota2.style.border = '2px solid red';
+        } else if (!nota1.value && !nota3.value) {
+            nota1.style.border = '2px solid red';
+            nota3.style.border = '2px solid red';
+        } else if (!nota2.value && !nota3.value) {
+            nota2.style.border = '2px solid red';
+            nota3.style.border = '2px solid red';
+        } else if (!nota1.value) {
+            nota1.style.border = '2px solid red';
+        } else if (!nota2.value) {
+            nota2.style.border = '2px solid red';
+        } else {
+            nota3.style.border = '2px solid red';
+        }
+    } else {
+        resultado.textContent = `A média final do Aluno foi ${mediaPonderada}.`.replace(".", ",");
+    }
+}
+
+calcular.addEventListener('click', validate);
+    </script>
+</body>
+
+</html>
